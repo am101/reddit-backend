@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 const verifyToken = require("../config/verifyToken");
 const Subreddit = require("../models/Subreddit");
@@ -28,11 +28,28 @@ router.post("/post/:subreddit", verifyToken, async (req, res) => {
         title,
         message,
         subreddit,
-        user: _id,
+        user: _id
     });
     newPost
         .save()
         .then(res.status(201).json({ message: "post created successfully" }));
+});
+router.delete("/post/:subreddit/:id", verifyToken, async (req, res) => {
+    const userToken = req.headers.authtoken;
+    const subreddit = req.params.subreddit;
+    const postId = req.params.id;
+
+    // looking for subreddit
+    const thisSubreddit = await Subreddit.findOne({ name: subreddit });
+    if (!thisSubreddit)
+        return res.status(404).json({ error: "subreddit not found" });
+
+    // looking for the post in subreddit
+    const thisPost = await Subreddit.findById({ postId });
+    console.log(thisPost);
+
+    // importing the users id
+    const { _id } = jwt.decode(userToken);
 });
 
 module.exports = router;

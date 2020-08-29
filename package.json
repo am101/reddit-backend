@@ -4,8 +4,13 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "build": "node server.js"
+    "start": "nodemon start.js",
+    "build": "node start.js",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +25,8 @@
     "mongoose": "^5.9.28"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "jest": "^26.4.1",
+    "nodemon": "^2.0.4",
+    "supertest": "^4.0.2"
   }
 }
